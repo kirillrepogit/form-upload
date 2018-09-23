@@ -1,6 +1,6 @@
 ﻿(function(){
 
-	var url = document.location.href + "controller/upload.php";
+	var url = document.location.href + "app/controller/controller.php";
 	var src = document.location.href + "controller/uploads/";
 
 	var form = document.getElementById("uploadForm");
@@ -36,13 +36,6 @@
 		Array.prototype.forEach.call(error, function(item) {
 			item.innerText = '';
 		});
-	}
-
-	function createElemetn(string) {
-		var par = document.createElement('p');
-		par.innerText = string;
-		return par;
-
 	}
 
 	function resetList(){
@@ -99,18 +92,6 @@
 		return listItem;
 	}
 
-	function createImages(obj) {
-		var wrapper = document.createElement('div');
-		wrapper.className = 'imageWrapper';
-		var img = document.createElement('img');
-		img.src = src + obj.path;
-		var paragraph = document.createElement('p');
-		paragraph.innerText = obj.size;
-		wrapper.appendChild(img);
-		wrapper.appendChild(paragraph);
-		preview.appendChild(wrapper);
-	}
-	
 	function formUpload(event) {
 		event.preventDefault();
 		var files = form.querySelectorAll('input[type="file"]');
@@ -128,21 +109,16 @@
 		dataSender.open("POST", url, true);
 		dataSender.onload  = function (data) {
 			if (data.target.response) {
-				var message = JSON.parse(data.target.response);
-				errorMessage.innerHTML = '';
-				Array.prototype.forEach.call(message, function (item) {
-					if (item.error) errorMessage.appendChild(createElemetn("Ошибка: " + item.error));
-					if (item.path) createImages(item);
-				});
+				errorMessage.innerHTML = data.target.response;
 			} else {
 				errorMessage.innerHTML = "Ошибка: Не удалось связаться с сервером";
 			}
 		};
-		inputUpload.addEventListener("change", changeStatus, false);
 		dataSender.send(data);
 		clearErrorMessage();
 		resetList();
 		form.reset();
+		inputUpload.addEventListener("change", changeStatus, false);
 	}
 
 	function inArray(type, array) {

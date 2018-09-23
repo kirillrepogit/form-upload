@@ -18,22 +18,17 @@ function resizeImage($filename, $src, $type){
 		if ($type == 'image/jpg') $source = imagecreatefromjpeg($file);
 		if ($type == 'image/jpeg') $source = imagecreatefromjpeg($file);
     	if ($type == 'image/png') $source = imagecreatefrompng($file);
-		if ($type == 'image/gif') $source = imagecreatefromgif($file);
-		// создаём новый файл с новыми размерами
+    	if ($type == 'image/gif') $source = imagecreatefromgif($file);
 		$image_p = imagecreatetruecolor($width, $height);
-		// копируем данные из старого в новый
 		imagecopyresized($image_p, $source, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
-		// удаляем старый
 		unlink($file);
-		// сохраняем новый
 		imagejpeg($image_p, $file, 100);
 		imagedestroy($image_p);
 		imagedestroy($source); 
 
-		return false;
-		
 	} catch (Exception $err){
-		return ['error' => $err->getMessage()];
+		$message = 'Ошибка во время изменения размера картинки.';
+		include '../view/view.message.php';
 	}
 }
 
