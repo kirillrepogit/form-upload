@@ -8,13 +8,13 @@ function loadImages($files){
 	$config = require('../config/config.php');
 	$dataBase = $config['db_config'];
 	
-	//заполнить поля для подключения к бд
+	//заполним поля для подключения к бд
 	$hostname = $dataBase['host']; 
 	$user = $dataBase['username']; 
 	$pass = $dataBase['pass']; 
 	$database = $dataBase['database']; 
 		
-	// подкючаемся к базе данных
+	// подключаемся к базе данных
 	$db = new DBHelper($hostname, $user, $pass, $database);
 	
 	$uploaddir = 'uploads'. DIRECTORY_SEPARATOR ;
@@ -24,7 +24,7 @@ function loadImages($files){
 
 	// cоздадим папку если её нет
 	if(!is_dir($pathFile.$uploaddir)) mkdir($pathFile.$uploaddir, 0777 );
-
+	// массив значений типов файлов для проверки MIME type
 	$types = array('image/jpg', 'image/png', 'image/jpeg', 'image/gif');
 	$resultArray = array();
 	$resultDB = array();
@@ -43,12 +43,10 @@ function loadImages($files){
 				$sizeFile = round(filesize($root.$fileName)/1024, 2). ' кб';
 				// записываем данные в таблицу
 				$resultDB =  $db->query("INSERT INTO images (name, path) VALUES (\"$dataName\", \"$fileName\")");
-				
 			}
 			$resultArray[] = ['name' => $fileName, 'size' => $sizeFile];
 
 		} else{
-			//echo ['error' => $file['name'].' неверный формат файла.'];
 			$message = $file['name'].' неверный формат файла.';
 			include '../view/view.message.php';
 		}

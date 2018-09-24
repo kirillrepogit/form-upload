@@ -94,6 +94,7 @@
 
 	function formUpload(event) {
 		event.preventDefault();
+		var inputForm = form.querySelector('input[type="submit"]');
 		var files = form.querySelectorAll('input[type="file"]');
 		var names = form.querySelectorAll('input[type="text"]');
 		var data = new FormData();
@@ -105,6 +106,7 @@
 			data.append(names[index].value, file.files[0]);
 		});
 		if(!chek) return;
+		inputForm.disabled = true;
 		var dataSender = new XMLHttpRequest();
 		dataSender.open("POST", url, true);
 		dataSender.onload  = function (data) {
@@ -115,6 +117,7 @@
 			}
 		};
 		dataSender.send(data);
+		inputForm.disabled = false;
 		clearErrorMessage();
 		resetList();
 		form.reset();

@@ -1,5 +1,5 @@
 ﻿<?php
-ini_set('display_errors', 0);
+
 class DBHelper{
     protected $connection;
     public function __construct($host, $user, $password, $db_name) {
